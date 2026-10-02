@@ -1,11 +1,12 @@
 export type Meeting = {
-	term: 'Fall 2025' | 'Spring 2026';
+	term: 'Fall 2025' | 'Spring 2026' | 'Fall 2026';
 	meetingLabel: string;
 	date: string;
 	paperTitle?: string;
 	leaders?: string;
-	time: string;
+	time?: string;
 	location: string;
+	canceled?: boolean;
 };
 
 const HYBRID_LOCATION = 'Hybrid (Teams + RV2809, Riverfront campus)';
@@ -60,13 +61,22 @@ export const SCHEDULE: Meeting[] = [
 		time: FALL_TIME,
 		location: HYBRID_LOCATION
 	},
+	{
+		term: 'Fall 2025',
+		meetingLabel: 'Meeting 6',
+		date: '2025-12-01',
+		paperTitle: '',
+		leaders: '',
+		time: FALL_TIME,
+		location: HYBRID_LOCATION
+	},
 
 	// Spring 2026
 	{
 		term: 'Spring 2026',
 		meetingLabel: 'Meeting 1',
 		date: '2026-01-12',
-		paperTitle: 'Logistic Meeting for 2026',
+		paperTitle: 'Logistic Meeting for Spring 2026',
 		leaders: 'All',
 		time: SPRING_EARLY_TIME,
 		location: HYBRID_LOCATION
@@ -110,6 +120,14 @@ export const SCHEDULE: Meeting[] = [
 	{
 		term: 'Spring 2026',
 		meetingLabel: 'Meeting 6',
+		date: '2026-03-30',
+		time: SPRING_TIME,
+		location: HYBRID_LOCATION,
+		canceled: true
+	},
+	{
+		term: 'Spring 2026',
+		meetingLabel: 'Meeting 7',
 		date: '2026-04-13',
 		paperTitle: 'A Multimodal Automated Interpretability Agent',
 		leaders: 'Dr. Lin Li',
@@ -118,11 +136,68 @@ export const SCHEDULE: Meeting[] = [
 	},
 	{
 		term: 'Spring 2026',
-		meetingLabel: 'Meeting 7',
+		meetingLabel: 'Meeting 8',
 		date: '2026-04-27',
-		paperTitle: 'TBD',
+		paperTitle: 'Covert Malicious Finetuning: Challenges in Safeguarding LLM Adaptation',
 		leaders: 'Salil',
 		time: SPRING_TIME,
+		location: HYBRID_LOCATION
+	},
+
+	// Fall 2026 (meeting time not yet announced)
+	{
+		term: 'Fall 2026',
+		meetingLabel: 'Meeting 1',
+		date: '2026-08-25',
+		paperTitle: 'Logistic Meeting for Fall 2026',
+		leaders: 'All',
+		location: HYBRID_LOCATION
+	},
+	{
+		term: 'Fall 2026',
+		meetingLabel: 'Meeting 2',
+		date: '2026-09-22',
+		location: HYBRID_LOCATION
+	},
+	{
+		term: 'Fall 2026',
+		meetingLabel: 'Meeting 3',
+		date: '2026-10-06',
+		paperTitle:
+			'Conformal Prediction with Large Language Models for Multi-Choice Question Answering',
+		leaders: 'Seth',
+		location: HYBRID_LOCATION
+	},
+	{
+		term: 'Fall 2026',
+		meetingLabel: 'Meeting 4',
+		date: '2026-10-20',
+		paperTitle:
+			'Attribute-Efficient PAC Learning of Sparse Halfspaces with Constant Malicious Noise Rate',
+		leaders: 'Dr. Shiwei Zeng',
+		location: HYBRID_LOCATION
+	},
+	{
+		term: 'Fall 2026',
+		meetingLabel: 'Meeting 5',
+		date: '2026-11-03',
+		leaders: 'Rita',
+		location: HYBRID_LOCATION
+	},
+	{
+		term: 'Fall 2026',
+		meetingLabel: 'Meeting 6',
+		date: '2026-11-17',
+		leaders: 'Alireza',
+		location: HYBRID_LOCATION
+	},
+	{
+		term: 'Fall 2026',
+		meetingLabel: 'Meeting 7',
+		date: '2026-12-01',
+		paperTitle:
+			'Using Reinforcement Learning to Train Large Language Models to Explain Human Decisions',
+		leaders: 'Sharmen S',
 		location: HYBRID_LOCATION
 	}
 ];
