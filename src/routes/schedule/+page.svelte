@@ -34,19 +34,23 @@
 				<li class="row">
 					<div class="row-meta">
 						<span>{fmtDate(m.date)}</span>
-						<span>{m.time}</span>
+						{#if m.time}<span>{m.time}</span>{/if}
 						<span>{m.meetingLabel}</span>
 					</div>
 					<div class="row-body">
 						<h3>
-							{#if m.paperTitle?.trim()}
+							{#if m.canceled}
+								<span class="muted">Canceled</span>
+							{:else if m.paperTitle?.trim()}
 								{m.paperTitle}
 							{:else}
 								<span class="muted">Paper to be decided</span>
 							{/if}
 						</h3>
 						<p class="muted small">{meta(m)}</p>
-						{#if isPast(m.date)}
+						{#if m.canceled}
+							<span class="tag">Canceled</span>
+						{:else if isPast(m.date)}
 							<span class="tag ok">Completed</span>
 						{:else}
 							<span class="tag">Upcoming</span>
