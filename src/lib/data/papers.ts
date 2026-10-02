@@ -257,5 +257,36 @@ export const PAPERS: Paper[] = [
 		citation: 'IEEE Transactions on Visualization and Computer Graphics 31.3 (2024): 1731-1745.',
 		proposer: 'Scichen Gao',
 		tags: ['Chart', 'LLM']
+	},
+	{
+		id: 'kumar-2023-conformal-mcqa',
+		link: 'https://arxiv.org/abs/2305.18404',
+		title: 'Conformal Prediction with Large Language Models for Multi-Choice Question Answering',
+		contribution: 'Conformal prediction sets for LLM answers on multiple-choice questions.',
+		authors:
+			'Bhawesh Kumar, Charlie Lu, Gauri Gupta, Anil Palepu, David Bellamy, Ramesh Raskar, Andrew Beam',
+		citation: 'arXiv:2305.18404, 2023.',
+		tags: ['Conformal Prediction', 'LLM', 'Uncertainty']
+	},
+	{
+		id: 'zeng-shen-2025-sparse-halfspaces',
+		link: 'https://arxiv.org/abs/2505.21430',
+		title:
+			'Attribute-Efficient PAC Learning of Sparse Halfspaces with Constant Malicious Noise Rate',
+		contribution:
+			'Attribute-efficient, noise-robust PAC learning of sparse halfspaces via hinge loss minimization.',
+		authors: 'Shiwei Zeng, Jie Shen',
+		citation: 'arXiv:2505.21430, 2025.',
+		tags: ['Theory', 'PAC Learning', 'Robustness']
+	},
+	{
+		id: 'zhu-2025-rl-explain-human-decisions',
+		link: 'https://arxiv.org/abs/2505.11614',
+		title: 'Using Reinforcement Learning to Train Large Language Models to Explain Human Decisions',
+		contribution:
+			'RL fine-tuning of LLMs to produce natural-language explanations of human decision making. Code: https://github.com/xhb120633/rl_human_behavior',
+		authors: 'Jian-Qiao Zhu, Hanbo Xie, Dilip Arumugam, Robert C. Wilson, Thomas L. Griffiths',
+		citation: 'International Conference on Learning Representations (ICLR), 2026.',
+		tags: ['Reinforcement Learning', 'LLM', 'Cognitive Science']
 	}
 ];

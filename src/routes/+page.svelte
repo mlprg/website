@@ -6,7 +6,7 @@
 	import { getReviewedPapers } from '$lib/data/review';
 	import { fmtDate, isPast } from '$lib/dates';
 
-	const next = SCHEDULE.find((m) => !isPast(m.date));
+	const next = SCHEDULE.find((m) => !m.canceled && !isPast(m.date));
 	const recent = getReviewedPapers()
 		.filter((p) => p.reviewed && isPast(p.reviewDate!))
 		.slice(-3)
@@ -36,9 +36,9 @@
 		<div class="card">
 			<p class="eyebrow">Next meeting</p>
 			{#if next}
-				<h2 class="card-title">{fmtDate(next.date)}, {next.time}</h2>
+				<h2 class="card-title">{fmtDate(next.date)}{next.time ? `, ${next.time}` : ''}</h2>
 				<p class="muted small">{next.location}</p>
-				<p>{next.paperTitle ?? 'Paper to be announced'}</p>
+				<p>{next.paperTitle?.trim() || 'Paper to be announced'}</p>
 			{:else}
 				<h2 class="card-title">Next term</h2>
 				<p class="muted">
