@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '$lib/components/Seo.svelte';
 	import leadership from '$lib/data/leadership.json';
 
 	type Link = { label: string; url: string };
@@ -10,8 +11,6 @@
 		links?: Link[];
 	};
 
-	const members = leadership as Member[];
-
 	const roleOrder: Record<string, number> = {
 		President: 1,
 		'Vice President': 2,
@@ -21,47 +20,57 @@
 		'Co-Advisor': 10
 	};
 
-	members.sort((a, b) => {
-		const ao = roleOrder[a.role] ?? 99;
-		const bo = roleOrder[b.role] ?? 99;
-		if (ao !== bo) return ao - bo;
-		return a.name.localeCompare(b.name);
+	const members = [...(leadership as Member[])].sort((a, b) => {
+		const d = (roleOrder[a.role] ?? 99) - (roleOrder[b.role] ?? 99);
+		return d || a.name.localeCompare(b.name);
 	});
 </script>
 
-<h1 style="margin: 0 0 14px;">Leadership</h1>
+<Seo
+	title="Leadership"
+	path="/leadership/"
+	description="Officers and advisors of the ML Paper Reading Group at Augusta University."
+/>
 
-<section class="card" style="padding: 16px; margin-bottom: 14px;">
-	<p style="margin:0; color:var(--muted); max-width: 90ch;">
-		The ML Paper Reading Group leadership team coordinates meeting logistics, schedules presenters,
-		and maintains the paper list. Reach out if you’d like to present or suggest a paper.
+<section class="section">
+	<h1>Leadership</h1>
+	<p class="lede">
+		The officers set the schedule, line up discussion leaders, and keep the paper list. Write to any
+		of them to propose a paper or offer to present.
 	</p>
 </section>
 
-<div class="grid cols-3">
-	{#each members as m (m.email ?? m.name)}
-		<section class="card" style="padding: 16px;">
-			<div class="pill">{m.role}</div>
-
-			<h2 style="margin: 10px 0 4px; font-size: 1.15rem; letter-spacing: -0.01em;">
-				{m.name}
-			</h2>
-
-			{#if m.affiliation}
-				<p style="margin: 0 0 10px; color: var(--muted);">{m.affiliation}</p>
-			{/if}
-
-			<div style="display:flex; gap:10px; flex-wrap:wrap;">
-				{#if m.email}
-					<a class="btn" href={`mailto:${m.email}`}>Email</a>
-				{/if}
-
-				{#if m.links}
-					{#each m.links as l (l.url)}
-						<a class="btn" href={l.url} target="_blank" rel="noreferrer">{l.label}</a>
+<section class="section">
+	<ul class="cards">
+		{#each members as m (m.email ?? m.name)}
+			<li class="card">
+				<p class="eyebrow">{m.role}</p>
+				<h2>{m.name}</h2>
+				{#if m.affiliation}<p class="muted small">{m.affiliation}</p>{/if}
+				<ul class="inline-list small">
+					{#if m.email}
+						<li><a href="mailto:{m.email}">{m.email}</a></li>
+					{/if}
+					{#each m.links ?? [] as l (l.url)}
+						<li><a href={l.url} rel="noreferrer">{l.label}</a></li>
 					{/each}
-				{/if}
-			</div>
-		</section>
-	{/each}
-</div>
+				</ul>
+			</li>
+		{/each}
+	</ul>
+</section>
+
+<style>
+	.cards {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.card h2 {
+		font-size: 1.2rem;
+		margin: 0.25rem 0 0.1rem;
+	}
+	.inline-list {
+		margin-top: 0.75rem;
+	}
+</style>

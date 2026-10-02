@@ -1,44 +1,95 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { page } from '$app/state';
+	import { site } from '$lib/site';
 
 	const links = [
-		{ href: '/', label: 'Home' },
-		{ href: '/schedule', label: 'Schedule' },
-		{ href: '/papers', label: 'Papers' },
-		{ href: '/leadership', label: 'Leadership' }
-		// { href: '/about', label: 'About' }
+		{ href: '/schedule/', label: 'Schedule' },
+		{ href: '/papers/', label: 'Papers' },
+		{ href: '/leadership/', label: 'Leadership' }
 	];
+
+	const current = $derived(page.url.pathname.replace(base, '') || '/');
 </script>
 
-<header style="position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px);">
-	<div class="container" style="padding: 14px 0;">
-		<div
-			class="card"
-			style="display:flex; align-items:center; justify-content:space-between; padding: 12px 14px; box-shadow:none;"
-		>
-			<a href="{base}/" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
-				<div
-					style="width:38px; height:38px; border-radius:12px; border:1px solid var(--border);
-					background: rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:center; overflow:hidden;"
-				>
-					<img
-						src="{base}/logo.png"
-						alt="ML Paper Reading Group logo"
-						style="width: 100%; height: 100%; object-fit: cover;"
-					/>
-				</div>
+<header class="site-header">
+	<div class="wrap bar">
+		<a class="brand" href="{base}/">
+			<img src="{base}/logo-160.webp" alt="" width="36" height="36" />
+			<span>
+				<strong>{site.title}</strong>
+				<span class="muted small">{site.org}</span>
+			</span>
+		</a>
 
-				<div style="display:flex; flex-direction:column; line-height:1.1;">
-					<span style="font-weight:700;">ML Paper Reading Group</span>
-					<span style="color:var(--muted); font-size:0.9rem;">Augusta University</span>
-				</div>
-			</a>
-
-			<nav style="display:flex; gap: 12px; flex-wrap: wrap; justify-content:flex-end;">
-				{#each links as l (l.href)}
-					<a class="pill" href="{base}{l.href}">{l.label}</a>
-				{/each}
-			</nav>
-		</div>
+		<nav aria-label="Main">
+			{#each links as l (l.href)}
+				<a href="{base}{l.href}" aria-current={current === l.href ? 'page' : undefined}>
+					{l.label}
+				</a>
+			{/each}
+		</nav>
 	</div>
 </header>
+
+<style>
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: var(--bg);
+		border-bottom: 1px solid var(--line);
+	}
+	.bar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		min-height: 60px;
+		flex-wrap: wrap;
+	}
+	.brand {
+		display: flex;
+		align-items: center;
+		gap: 0.65rem;
+		color: var(--text);
+		text-decoration: none;
+	}
+	.brand img {
+		border-radius: 6px;
+	}
+	.brand > span {
+		display: flex;
+		flex-direction: column;
+		line-height: 1.2;
+	}
+	nav {
+		display: flex;
+		gap: 0.25rem;
+	}
+	nav a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		padding: 0 0.6rem;
+		color: var(--muted);
+		font-weight: 500;
+		text-decoration: none;
+		border-bottom: 2px solid transparent;
+	}
+	nav a:hover {
+		color: var(--text);
+	}
+	nav a[aria-current='page'] {
+		color: var(--text);
+		border-bottom-color: var(--accent);
+	}
+	@media (max-width: 480px) {
+		.brand .small {
+			display: none;
+		}
+		nav a {
+			padding: 0 0.45rem;
+		}
+	}
+</style>
