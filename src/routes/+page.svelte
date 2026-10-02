@@ -1,67 +1,133 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import Seo from '$lib/components/Seo.svelte';
+	import { site } from '$lib/site';
+	import { SCHEDULE } from '$lib/data/schedule';
+	import { getReviewedPapers } from '$lib/data/review';
+	import { fmtDate, isPast } from '$lib/dates';
 
-	const universityPresenceUrl =
-		'https://augusta.presence.io/organization/ai-ml-paper-reading-group';
-	const contactUrl = '';
+	const next = SCHEDULE.find((m) => !isPast(m.date));
+	const recent = getReviewedPapers()
+		.filter((p) => p.reviewed && isPast(p.reviewDate!))
+		.slice(-3)
+		.reverse();
 </script>
 
-<section class="card" style="padding: 22px;">
-	<div class="pill">Machine Learning • Reading & Discussion • Community</div>
+<Seo path="/" />
 
-	<div style="display:flex; gap: 18px; margin-top: 16px; align-items:center; flex-wrap:wrap;">
-		<img
-			src="{base}/logo.png"
-			alt="ML Paper Reading Group logo"
-			style="width: 74px; height: 74px; border-radius: 18px; border: 1px solid var(--border);
-			background: rgba(255,255,255,0.05); object-fit: cover;"
-		/>
+<section class="section hero">
+	<div>
+		<p class="eyebrow">{site.org} · Graduate student organization</p>
+		<h1>Reading machine learning papers, carefully, together.</h1>
+		<p class="lede">
+			We meet every other week to work through one paper: what it claims, how the evidence holds up,
+			and what we can build from it. Foundations through current LLM work.
+		</p>
+		<div class="actions">
+			<a class="btn primary" href="{base}/schedule/">See the schedule</a>
+			<a class="btn" href={site.presence} rel="noreferrer">Join on Presence</a>
+		</div>
+	</div>
+	<img src="{base}/logo-160.webp" alt="{site.title} logo" width="128" height="128" />
+</section>
 
-		<div style="min-width: min(560px, 100%); flex: 1;">
-			<h1 style="margin: 0 0 6px; font-size: clamp(2rem, 3vw, 2.7rem); letter-spacing:-0.02em;">
-				ML Paper Reading Group
-			</h1>
-
-			<p style="margin: 0; color: var(--muted); font-size: 1.05rem; max-width: 75ch;">
-				We meet regularly to read and discuss influential ML papers including foundations, modern
-				LLMs, theory, and applied work. The goal is practical understanding: what the paper does,
-				why it works, and what we can build from it.
+<section class="section">
+	<div class="cards">
+		<div class="card">
+			<p class="eyebrow">Next meeting</p>
+			{#if next}
+				<h2 class="card-title">{fmtDate(next.date)}, {next.time}</h2>
+				<p class="muted small">{next.location}</p>
+				<p>{next.paperTitle ?? 'Paper to be announced'}</p>
+			{:else}
+				<h2 class="card-title">Next term</h2>
+				<p class="muted">
+					The next schedule is being set. Watch the
+					<a href="{base}/schedule/">schedule page</a> or Presence for dates.
+				</p>
+			{/if}
+		</div>
+		<div class="card">
+			<p class="eyebrow">Format</p>
+			<h2 class="card-title">One leader, open discussion</h2>
+			<p class="muted">
+				A discussion leader presents the core idea and key figures, then the group works through
+				strengths, weaknesses, and open questions. About an hour, hybrid.
+			</p>
+		</div>
+		<div class="card">
+			<p class="eyebrow">Get involved</p>
+			<h2 class="card-title">Propose or present</h2>
+			<p class="muted">
+				Suggest a paper, volunteer to lead a session, or just come and listen. Any AU graduate
+				student is welcome. Contact the <a href="{base}/leadership/">officers</a>.
 			</p>
 		</div>
 	</div>
-
-	<div style="display:flex; gap: 12px; margin-top: 18px; flex-wrap: wrap;">
-		<a class="btn primary" href="{base}/schedule">View schedule</a>
-		<a class="btn" href="{base}/papers">Papers we’ve reviewed</a>
-		<a class="btn" href={universityPresenceUrl} target="_blank" rel="noreferrer"
-			>University presence</a
-		>
-		{#if contactUrl}
-			<a class="btn" href={contactUrl} target="_blank" rel="noreferrer">Join / Contact</a>
-		{/if}
-	</div>
 </section>
 
-<div class="grid cols-3" style="margin-top: 14px;">
-	<section class="card" style="padding: 16px;">
-		<h3 style="margin: 0 0 8px;">What to expect</h3>
-		<p style="margin:0; color:var(--muted);">
-			One discussion leader, then group discussion: core idea, key figures, strengths/weaknesses,
-			and open questions.
-		</p>
+{#if recent.length}
+	<section class="section">
+		<div class="section-head">
+			<h2>Recently discussed</h2>
+			<a href="{base}/papers/">All papers</a>
+		</div>
+		<ul class="rows">
+			{#each recent as p (p.id)}
+				<li class="row">
+					<div class="row-meta">
+						<span>{fmtDate(p.reviewDate)}</span>
+						{#if p.discussionLeaders}<span>Led by {p.discussionLeaders}</span>{/if}
+					</div>
+					<div class="row-body">
+						<h3>
+							{#if p.link}<a href={p.link} rel="noreferrer">{p.title}</a>{:else}{p.title}{/if}
+						</h3>
+						{#if p.authors}<p class="muted small">{p.authors}</p>{/if}
+					</div>
+				</li>
+			{/each}
+		</ul>
 	</section>
+{/if}
 
-	<section class="card" style="padding: 16px;">
-		<h3 style="margin: 0 0 8px;">Topics</h3>
-		<p style="margin:0; color:var(--muted);">
-			Transformers/LLMs, theory, safety, and applied ML. We keep a running list of reviewed papers.
-		</p>
-	</section>
-
-	<section class="card" style="padding: 16px;">
-		<h3 style="margin: 0 0 8px;">Get involved</h3>
-		<p style="margin:0; color:var(--muted);">
-			Suggest papers, volunteer to present, or propose a theme week. New members welcome.
-		</p>
-	</section>
-</div>
+<style>
+	.hero {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 2rem;
+		padding-block: 3.5rem;
+	}
+	.hero h1 {
+		margin: 0.5rem 0 1rem;
+		max-width: 18ch;
+	}
+	.hero img {
+		flex: none;
+		border-radius: 12px;
+	}
+	.actions {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+		margin-top: 1.5rem;
+	}
+	.card-title {
+		font-size: 1.1rem;
+	}
+	.card p + p {
+		margin-top: 0.5rem;
+	}
+	@media (max-width: 640px) {
+		.hero {
+			flex-direction: column-reverse;
+			align-items: flex-start;
+			padding-block: 2rem;
+		}
+		.hero img {
+			width: 72px;
+			height: 72px;
+		}
+	}
+</style>
